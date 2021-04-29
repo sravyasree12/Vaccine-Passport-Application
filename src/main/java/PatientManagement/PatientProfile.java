@@ -8,7 +8,9 @@ package PatientManagement;
 import MedicalPersonnel.NurseProfile;
 import VaccineManagement.Address;
 import VaccineManagement.Vaccine;
+import com.github.javafaker.Faker;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -27,75 +29,33 @@ public class PatientProfile {
     Gender gender;
     long mobileNumber;
     String emailAddress;
-    Address address;  
+    String address;  
     String insuranceID;
     public boolean isVaccinated;
     ArrayList<PatientHistory> listOfPatientHistory;
+    String patientVaccineRecordID;
     
-    
-    public PatientProfile(String name, Address address) {
-        
+    public PatientProfile(String name,String address) {
+        Faker f = new Faker();
         this.name = name;
+        this.address = address;
         this.age = age;
-        this.gender = gender;
+        this.gender = Gender.MALE;
         this.mobileNumber = mobileNumber;
         this.emailAddress = emailAddress;
-        this.insuranceID = insuranceID;
+        //this.insuranceID = f.finance().creditCard();
         this.isVaccinated = false;
-
+        this.patientVaccineRecordID = patientVaccineRecordID;         
         this.patientUUID = UUID.randomUUID().toString();
     }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getPatientUUID() {
-        return patientUUID;
-    }
-
-    public void setPatientUUID(String patientUUID) {
-        this.patientUUID = patientUUID;
-    }
-    
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public long getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(long mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getInsuranceID() {
-        return insuranceID;
-    }
-
-    public void setInsuranceID(String insuranceID) {
-        this.insuranceID = insuranceID;
-    }
-    
-  //this method determines the medical eligibility of the patient for vaccine.
-    public boolean isPatientEligibleForVaccine(PatientHistory ph){
+     /**
+      * "isPatientEligibleForVaccine" method determines the medical eligibility of the patient for vaccine.
+      * @return Boolean true: when eligible for vaccine (medically fit to receive vaccine)
+      *                 false: when ineligible for vaccine (medically unfit to receive vaccine)
+      */
+     
+    public boolean isPatientEligibleForVaccine(){
+        PatientHistory ph = getListOfPatientHistory().get(listOfPatientHistory.size() - 1);
         if((age > 16) && 
                 (ph.getRespiratoryRate() > 12 && ph.getRespiratoryRate() < 20) &&
                 (ph.getHeartRate() > 55 && ph.getHeartRate() < 105) &&
@@ -104,10 +64,56 @@ public class PatientProfile {
         }  
         return true;         
     }
-   
-  //determines if patient initially is vaccinated or not 
+    
+     
+    /**
+     * "isPatientVaccinated" method determines if patient initially is vaccinated or not
+     * @return Boolean true: previously vaccinated
+     *                 false: not vaccinated previously  
+     */
+  // 
     public boolean isPatientVaccinated(){
         return isVaccinated;  
     }
 
+    public ArrayList<PatientHistory> getListOfPatientHistory() {
+        return listOfPatientHistory;
+    }
+
+    public String getPatientVaccineRecordID() {
+        return patientVaccineRecordID;
+    }
+
+    public void setPatientVaccineRecordID(String patientVaccineRecordID) {
+        this.patientVaccineRecordID = patientVaccineRecordID;
+        
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getPatientUUID() {
+        return patientUUID;
+    }
+    
+    
+    
+    
+     /*
+    * Override the toString method to get a meaningful response upon printing the string.
+    */
+     @Override
+    public String toString(){
+        return  "Name:" + name + 
+                "\n\tUUID:" + patientUUID +
+                "\n\tAddress:" + address + 
+                "\n\tVaccine Status:" + isVaccinated +
+                "\n\tEligible for vaccine:" + isPatientEligibleForVaccine();
+
+}
 }

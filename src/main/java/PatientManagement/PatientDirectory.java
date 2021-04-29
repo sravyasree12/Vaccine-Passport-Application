@@ -14,17 +14,26 @@ import java.util.ArrayList;
 * @author Sravya Sree Ogirala
  */
 public class PatientDirectory {
-    Management management;
     ArrayList<PatientProfile> listOfPatientProfiles;
     
-    public PatientDirectory(Management management){
-        this.management = management;
+    public PatientDirectory(){
+        this.listOfPatientProfiles = new ArrayList<>();
     }
     
-    public PatientProfile newPatientProfile(String name, Address address){
+    /**
+     * "newPatientProfile" method creates Patients profiles and adds it to "listOfPatientProfiles" ArrayList 
+     * @param address from Address
+     * @return PatientProfile with patient details
+     */
+    
+    public PatientProfile newPatientProfile(String name, String address){
         PatientProfile pp = new PatientProfile(name, address);
-        listOfPatientProfiles.add(pp);
+        getListOfPatientProfiles().add(pp);
         return pp;
+    }
+    
+    public ArrayList<PatientProfile> getListOfPatientProfiles() {
+        return listOfPatientProfiles;
     }
 
 }

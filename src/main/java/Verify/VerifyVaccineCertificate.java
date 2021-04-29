@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Supplier;
+package Verify;
 
 /**
  *
- * @author sravy
+* @author Sravya Sree Ogirala
  */
-public class VaccineSupplierDirectory {
+public class VerifyVaccineCertificate {
+    //verify vaccine certificate given to person whether it's genuine and valid or not
+    
+    
     
 }

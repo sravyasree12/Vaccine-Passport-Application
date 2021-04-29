@@ -20,31 +20,22 @@ public class PatientHistory {
      private int respiratoryRate;
      private int heartRate;
      private int systolicBloodPressure;
-     private double weightInKilos;
-     private double weightInPounds;
+     double weight;
      private ZonedDateTime creationTime;
-    private ZonedDateTime creationDate;
-    private String chiefComplaint;
-    
+     double weightInPounds;
+     double weightInKilos;
+    MeasurementType weightMeasurement;
 
     public PatientHistory(
             int respiratoryRate, 
             int heartRate, 
-            int systolicBloodPressure, 
-            double weight,
-            double weightInKilos,
-             double weightInPounds,
-            MeasurementType weightMeasurement,
-            ZonedDateTime creationTime,
-            ZonedDateTime creationDate, 
-            String chiefComplaint)
-         {
-        
+            int systolicBloodPressure){
+           
+         
         this.respiratoryRate = respiratoryRate;
         this.heartRate = heartRate;
         this.systolicBloodPressure = systolicBloodPressure;
-        this.creationDate = creationDate;
-        this.chiefComplaint = chiefComplaint;
+     
         
         if (weightMeasurement == MeasurementType.KILOS){
             this.weightInKilos = weight;
@@ -106,21 +97,6 @@ public class PatientHistory {
         this.creationTime = creationTime;
     }
 
-    public ZonedDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(ZonedDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getChiefComplaint() {
-        return chiefComplaint;
-    }
-
-    public void setChiefComplaint(String chiefComplaint) {
-        this.chiefComplaint = chiefComplaint;
-    }
     
     
      /*
@@ -129,14 +105,14 @@ public class PatientHistory {
        */
      @Override
     public String toString(){
-        return "Chief Complaint: " + chiefComplaint
-                + "Respiratory Rate: " + respiratoryRate
+        return 
+                "Respiratory Rate: " + respiratoryRate
                 +"\n Heart Rate: " + heartRate
                 +"\n Systolic Blood Pressure: " + systolicBloodPressure
                 +"\n Weight in Kilos: " + weightInKilos
                 +"\n Weight in Pounds: " + weightInPounds
-                +"\n Creation Time: " + creationTime
-                +"\n Creation Date: " + creationDate;
+                +"\n Creation Time: " + creationTime;
+           
     }
         
     public double weightPoundsToKilos(double pounds){

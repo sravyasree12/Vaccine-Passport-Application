@@ -4,36 +4,25 @@
  * and open the template in the editor.
  */
 package VaccineManagement;
+
+import com.github.javafaker.Faker;
+
 /**
  *
  * @author Sravya Sree Ogirala
  */
 public class Address {
     
-    String addressLine1;
-    String addressLine2;
-    String city;
-    int zipCode;
-    String state;
-    String country;
+    String address;
+ 
 
     /*
     Constructor for Address object
-     * @param addressLine1 First line of the address
-     * @param addressLine2 Second line of the address
-     * @param city City of vaccine center
-     * @param zipCode Zip Code associated with the address
-     * @param state Represents the State.
-     * @param country Represents the country
+     * @param address 
     */
-    public Address(String addressLine1) { 
-   
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.state = state;
-        this.country = country;
+    public Address() { 
+      
+        this.address = address;
     }
     
     /*
@@ -42,12 +31,8 @@ public class Address {
     */
     @Override
     public String toString(){
-        return  "\n" + addressLine1 + "\n"
-                + addressLine2 + "\n"
-                + city + "\n"
-                + zipCode + "\n"
-                + state + "\n"
-                + country + "\n";
+        return  "\n" + address + "\n";
+               
     }
     
 }

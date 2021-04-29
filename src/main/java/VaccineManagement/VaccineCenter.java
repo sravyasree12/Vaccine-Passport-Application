@@ -6,7 +6,11 @@
 package VaccineManagement;
 
 import MedicalPersonnel.NurseProfile;
+import PatientManagement.PatientHistory;
 import PatientManagement.PatientProfile;
+import Verify.Verification;
+import com.github.javafaker.Faker;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,36 +28,58 @@ public class VaccineCenter {
     String vaccineCenterAddress; //give random address
     String centerUUID;
     long vaccineAvailability;
-    HashMap<Date, PatientProfile> slotBookingMap;
+    public ArrayList<ZonedDateTime> listOfSlots;
+    HashMap<ZonedDateTime, PatientProfile> slotBookingMap;
+    ArrayList<NurseProfile> listOfAssignedNurses;
     
     //the constructor has been made protected to avoid object creation elsewhere 
-    protected VaccineCenter(String vaccineCenterName, Address vaccineCenterAddress){
+    //Vaccine Center objects can be created only via Vaccine Inventory using addVaccineCenter()
+    protected VaccineCenter(String vaccineCenterName, String vaccineCenterAddress){
+        
         this.vaccineCenterName = vaccineCenterName;
-       // this.vaccineCenterAddress = vaccineCenterAddress;
+       this.vaccineCenterAddress = vaccineCenterAddress;
         this.centerUUID = UUID.randomUUID().toString();
-        slotBookingMap = new HashMap<Date, PatientProfile>();
+        slotBookingMap = new HashMap<ZonedDateTime, PatientProfile>();
+        this.listOfAssignedNurses = new ArrayList<NurseProfile>();
+        listOfSlots = new ArrayList<ZonedDateTime>();
 
        }
     
-    //method to add nurse to vaccine center
-    public NurseProfile addNurse(String name){
-        NurseProfile nurse = new NurseProfile(name);
-        return nurse;
-    }
- 
-    //this method allows patient to schedule vaccine appointment based on total number of vaccines in a vaccine center
-    public void scheduleVaccineAppointment(PatientProfile pDetails, Date d){    //total vaccine slots
-      if(availableSlots() == 0 || slotBookingMap.containsKey(d)){
+     //this method allows patient to schedule vaccine appointment based on total number of vaccines in a vaccine center
+     //all vaccines in a vaccine center will be available in slots to schedule for patients
+      //total vaccine slots
+    public void scheduleVaccineAppointment(ZonedDateTime d, PatientProfile pDetails){  //test method later
+      Verification vp = new Verification(pDetails);
+        if((pDetails.isPatientEligibleForVaccine()== false) || (vp.isPatientIDValid() == false)) {
+            System.out.println("Sorry! You are not eligible for vaccination.");
+          }
+      if(numberOfAvailableSlots() == 0 || slotBookingMap.containsKey(d)){
         return;
         }
       slotBookingMap.put(d, pDetails);
      }
     
     //this method tells about the number of vaccination slots available in a vaccine center
-    public long availableSlots(){  
+      // available slots = total slots - booked slots
+    public long numberOfAvailableSlots(){  
            return (this.vaccineAvailability - slotBookingMap.size());  
-           // available slots = total slots - booked slots
+         
     }
+    
+    //adds date, time to the list of slots.
+    public void addTimeSlot(ZonedDateTime date){
+        listOfSlots.add(date);
+    }
+    
+    public ArrayList<NurseProfile> getListOfAssignedNurses() {
+        return listOfAssignedNurses;
+    }
+
+    public ArrayList<ZonedDateTime> getListOfSlots() {
+        return listOfSlots;
+    }
+    
+    
     
      @Override
     public String toString(){

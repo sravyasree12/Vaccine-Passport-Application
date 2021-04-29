@@ -12,33 +12,25 @@ import java.io.Serializable;
 import java.lang.Object;
 import java.security.cert.Certificate;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 /**
  *
 * @author Sravya Sree Ogirala
  */
 
 //Certificate issued to the vaccinated person which is valid globally.
-public abstract class VaccineCertificate {
-    PatientProfile pDetails;
-    Vaccine vDetails;
-    VaccineCenter vcDetails;
-    ZonedDateTime dateAndTime;
-   
-    public VaccineCertificate(
-            PatientProfile pDetails, 
-            Vaccine vDetails, 
-            VaccineCenter vcDetails, 
-            ZonedDateTime dateAndTime) {
-        this.pDetails = pDetails;
-        this.vDetails = vDetails;
-        this.vcDetails = vcDetails;
-        this.dateAndTime = dateAndTime;
+public class VaccineCertificate {
+    public HashMap<PatientProfile, String> vaccinePatientMap;
+    
+    
+    //takes key input and returns value output
+    public void printPatientCertificate(PatientProfile pp){
+        System.out.println(
+                "****VACCINE PASSPORT****\n" +
+                "Name:" + pp.getName() + 
+                "\n\tID:" + pp.getPatientUUID() +
+                "\n\tAge:" + pp.getAge() +
+                "\n\tVaccine record:" + vaccinePatientMap.get(pp)
+        );
     }
-
-  
-    
-    
-    
-    
-    
 }

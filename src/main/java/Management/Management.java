@@ -7,7 +7,7 @@ package Management;
 
 import MedicalPersonnel.NurseDirectory;
 import PatientManagement.PatientDirectory;
-import VaccineManagement.VaccineCenterDirectory;
+import VaccineManagement.VaccineInventory;
 
 /**
  *
@@ -16,14 +16,14 @@ import VaccineManagement.VaccineCenterDirectory;
 public class Management {
     String managementName;
     private NurseDirectory nurseDirectory;
-    private VaccineCenterDirectory vaccineCenterDirectory;
     private PatientDirectory patientDirectory;
+    private VaccineInventory vaccineInventory;
     
-    public Management(String managementName){
+    public Management(){
         this.managementName = managementName;
-        nurseDirectory = new NurseDirectory(this);
-        vaccineCenterDirectory = new VaccineCenterDirectory(this);
-        patientDirectory = new PatientDirectory(this);
+        nurseDirectory = new NurseDirectory();
+        patientDirectory = new PatientDirectory();
+        vaccineInventory = new VaccineInventory();
     }
 
     public String getManagementName() {
@@ -34,13 +34,14 @@ public class Management {
         return nurseDirectory;
     }
 
-    public VaccineCenterDirectory getVaccineCenterDirectory() {
-        return vaccineCenterDirectory;
-    }
-
     public PatientDirectory getPatientDirectory() {
         return patientDirectory;
     }
+    
+    public VaccineInventory getVaccineInventory(){
+        return vaccineInventory;
+    }
+   
     
     
     

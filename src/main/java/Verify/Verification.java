@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Verification;
+package Verify;
 
 import PatientManagement.PatientProfile;
+import com.github.javafaker.Faker;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -16,11 +18,12 @@ import java.util.Random;
 public class Verification {
     String typeOfID;
     String idNumber;
-    PatientProfile pDetails; //name of Patient
+    PatientProfile pDetails; 
+    //this HashMap maps the patient name and vaccine ID as Key,Value pair to verify if the got vaccinated or not
+    public static HashMap<PatientProfile, String> patientVaccineIDMap;
 
-    public Verification(String typeOfID, String idNumber) {
-        this.typeOfID = typeOfID;
-        this.idNumber = idNumber;
+    public Verification(PatientProfile pDetails) {
+      this.pDetails =  pDetails;
     }
     
     //to verify if the patient is valid or not by checking government ID
@@ -44,29 +47,7 @@ public class Verification {
         }
     }
     
-//    //to verify the authenticity of vaccine center
-//    //check using vaccine center uuid
-//    public boolean isVaccineCenterValid(){
-//        ArrayList<UUID> vc = new ArrayList<UUID>();
-//        
-//        
-//    }
-//    
-//    //to verify authenticity of vaccine
-//    //check using vaccine uuid
-//    public boolean isVaccineValid(){
-//        
-//    }
-//    
-//    //to verify authenticity of Nurse
-//    //check using nurse employee ID
-//    public boolean isNurseValid(){
-//        
-//    }
     
     
-    
-    
-    
-    
+
 }
