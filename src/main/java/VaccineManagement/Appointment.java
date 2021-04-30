@@ -20,8 +20,9 @@ import java.util.List;
 
 public class Appointment {
    public HashMap<VaccineCenter, ArrayList<ZonedDateTime>> allSlotsMap;
+   
    public Appointment(){
-       allSlotsMap = new HashMap<VaccineCenter, ArrayList<ZonedDateTime>>();
+       this.allSlotsMap = new HashMap<VaccineCenter, ArrayList<ZonedDateTime>>();
    }
    
    public HashMap<VaccineCenter, ArrayList<ZonedDateTime>> displayAllSlotsMap(List<VaccineCenter> listOfVaccineCenters){

@@ -28,7 +28,7 @@ public class PatientDirectory {
     
     public PatientProfile newPatientProfile(String name, String address){
         PatientProfile pp = new PatientProfile(name, address);
-        getListOfPatientProfiles().add(pp);
+        listOfPatientProfiles.add(pp);
         return pp;
     }
     

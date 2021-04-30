@@ -38,7 +38,6 @@ public class NurseDirectory {
         NurseProfile nurse = new NurseProfile(name);
         listOfNurseProfiles.add(nurse);
         List<NurseProfile> nurses = center.getListOfAssignedNurses();
-        System.out.println(nurses);
         nurses.add(nurse);
 
         return nurse;
@@ -47,5 +46,10 @@ public class NurseDirectory {
     public ArrayList<NurseProfile> getListOfNurseProfiles() { 
         return listOfNurseProfiles;
     }
+    
+//    @Override
+//    public String toString(){
+//        return  "\nList of Nurses:" + listOfNurseProfiles;       
+//    }
   
 }

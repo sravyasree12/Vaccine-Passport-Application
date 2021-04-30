@@ -20,17 +20,17 @@ import java.util.HashMap;
 
 //Certificate issued to the vaccinated person which is valid globally.
 public class VaccineCertificate {
-    public HashMap<PatientProfile, String> vaccinePatientMap;
+    public static HashMap<PatientProfile, String> vaccinePatientMap = new HashMap<PatientProfile, String>();
+   
     
-    
-    //takes key input and returns value output
-    public void printPatientCertificate(PatientProfile pp){
+    //takes PatientProfile input and prints certificate
+    public static void printPatientCertificate(PatientProfile pp){
         System.out.println(
-                "****VACCINE PASSPORT****\n" +
+                "\t******VACCINE CERTIFICATE******\n" +
                 "Name:" + pp.getName() + 
                 "\n\tID:" + pp.getPatientUUID() +
                 "\n\tAge:" + pp.getAge() +
-                "\n\tVaccine record:" + vaccinePatientMap.get(pp)
-        );
+                "\n\tVaccine record:" + vaccinePatientMap.get(pp));
+       
     }
 }

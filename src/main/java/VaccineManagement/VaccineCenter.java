@@ -29,8 +29,9 @@ public class VaccineCenter {
     String centerUUID;
     long vaccineAvailability;
     public ArrayList<ZonedDateTime> listOfSlots;
-    HashMap<ZonedDateTime, PatientProfile> slotBookingMap;
+    public HashMap<ZonedDateTime, PatientProfile> slotBookingMap;
     ArrayList<NurseProfile> listOfAssignedNurses;
+    
     
     //the constructor has been made protected to avoid object creation elsewhere 
     //Vaccine Center objects can be created only via Vaccine Inventory using addVaccineCenter()
@@ -39,34 +40,38 @@ public class VaccineCenter {
         this.vaccineCenterName = vaccineCenterName;
        this.vaccineCenterAddress = vaccineCenterAddress;
         this.centerUUID = UUID.randomUUID().toString();
-        slotBookingMap = new HashMap<ZonedDateTime, PatientProfile>();
+        this.slotBookingMap = new HashMap<ZonedDateTime, PatientProfile>();
         this.listOfAssignedNurses = new ArrayList<NurseProfile>();
-        listOfSlots = new ArrayList<ZonedDateTime>();
+        this.listOfSlots = new ArrayList<ZonedDateTime>();
 
-       }
-    
-     //this method allows patient to schedule vaccine appointment based on total number of vaccines in a vaccine center
-     //all vaccines in a vaccine center will be available in slots to schedule for patients
-      //total vaccine slots
-    public void scheduleVaccineAppointment(ZonedDateTime d, PatientProfile pDetails){  //test method later
-      Verification vp = new Verification(pDetails);
-        if((pDetails.isPatientEligibleForVaccine()== false) || (vp.isPatientIDValid() == false)) {
-            System.out.println("Sorry! You are not eligible for vaccination.");
-          }
-      if(numberOfAvailableSlots() == 0 || slotBookingMap.containsKey(d)){
-        return;
-        }
-      slotBookingMap.put(d, pDetails);
-     }
+    }
+//    
+//     //this method allows patient to schedule vaccine appointment based on total number of vaccines in a vaccine center
+//     //all vaccines in a vaccine center will be available in slots to schedule for patients
+//      //total vaccine slots
+//    public void scheduleVaccineAppointment(ZonedDateTime d, PatientProfile pDetails){  //test method later
+//      Verification vp = new Verification(pDetails);
+//        if((pDetails.isPatientEligibleForVaccine()== false) || (vp.isPatientIDValid() == false)) {
+//            System.out.println("Sorry! You are not eligible for vaccination.");
+//          }
+//      if(numberOfAvailableSlots() == 0 || slotBookingMap.containsKey(d)){
+//        return;
+//        }
+//      slotBookingMap.put(d, pDetails);
+//     }
     
     //this method tells about the number of vaccination slots available in a vaccine center
       // available slots = total slots - booked slots
     public long numberOfAvailableSlots(){  
-           return (this.vaccineAvailability - slotBookingMap.size());  
-         
+        return (this.vaccineAvailability - slotBookingMap.size());     
     }
     
-    //adds date, time to the list of slots.
+    public HashMap<ZonedDateTime, PatientProfile> updateSlotBookingMap(ZonedDateTime date, PatientProfile pp){
+        slotBookingMap.put(date, pp);   
+        return slotBookingMap; 
+    }
+
+    //adds different date, time to the list of slots.
     public void addTimeSlot(ZonedDateTime date){
         listOfSlots.add(date);
     }
@@ -78,6 +83,14 @@ public class VaccineCenter {
     public ArrayList<ZonedDateTime> getListOfSlots() {
         return listOfSlots;
     }
+
+    public long getVaccineAvailability() {
+        return vaccineAvailability;
+    }
+
+    public void setVaccineAvailability(long vaccineAvailability) {
+        this.vaccineAvailability = vaccineAvailability;
+    }
     
     
     
@@ -85,7 +98,11 @@ public class VaccineCenter {
     public String toString(){
         return  "\n" + vaccineCenterName + "\n"
                 + vaccineCenterAddress + "\n"
-                + centerUUID + "\n";
+                + centerUUID + "\n" 
+                + "Number of available vaccine slots:" + numberOfAvailableSlots();
+                
+                
+                
                
     }
     

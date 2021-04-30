@@ -8,8 +8,12 @@ package PatientManagement;
 import MedicalPersonnel.NurseProfile;
 import VaccineManagement.Address;
 import VaccineManagement.Vaccine;
+import VaccineManagement.VaccineCenter;
+import Verify.Verification;
 import com.github.javafaker.Faker;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
@@ -34,6 +38,7 @@ public class PatientProfile {
     public boolean isVaccinated;
     ArrayList<PatientHistory> listOfPatientHistory;
     String patientVaccineRecordID;
+
     
     public PatientProfile(String name,String address) {
         Faker f = new Faker();
@@ -47,15 +52,16 @@ public class PatientProfile {
         this.isVaccinated = false;
         this.patientVaccineRecordID = patientVaccineRecordID;         
         this.patientUUID = UUID.randomUUID().toString();
+        this.listOfPatientHistory = new ArrayList<PatientHistory>(); 
     }
+    
      /**
       * "isPatientEligibleForVaccine" method determines the medical eligibility of the patient for vaccine.
       * @return Boolean true: when eligible for vaccine (medically fit to receive vaccine)
       *                 false: when ineligible for vaccine (medically unfit to receive vaccine)
       */
-     
     public boolean isPatientEligibleForVaccine(){
-        PatientHistory ph = getListOfPatientHistory().get(listOfPatientHistory.size() - 1);
+        PatientHistory ph = listOfPatientHistory.get(listOfPatientHistory.size()- 1);
         if((age > 16) && 
                 (ph.getRespiratoryRate() > 12 && ph.getRespiratoryRate() < 20) &&
                 (ph.getHeartRate() > 55 && ph.getHeartRate() < 105) &&
@@ -64,22 +70,44 @@ public class PatientProfile {
         }  
         return true;         
     }
-    
-     
+
     /**
      * "isPatientVaccinated" method determines if patient initially is vaccinated or not
      * @return Boolean true: previously vaccinated
      *                 false: not vaccinated previously  
      */
-  // 
     public boolean isPatientVaccinated(){
         return isVaccinated;  
     }
-
+    
+    //this method allows patient to schedule vaccine appointment based on total number of vaccines in a vaccine center
+    //all vaccines in a vaccine center will be available in slots to schedule for patients
+    //total vaccine slots
+    public void scheduleVaccineAppointment(ZonedDateTime d, VaccineCenter vCenter){ 
+        if(!(isPatientEligibleForVaccine()) || !(Verification.isPatientIDValid())) {
+            System.out.println("\n\tSorry! You are not eligible for vaccination.");
+          } else {
+        if(vCenter.numberOfAvailableSlots() == 0 || vCenter.slotBookingMap.containsKey(d)){
+        return;
+        }
+        vCenter.slotBookingMap.put(d, this);
+    }
+    }
+    
+    public PatientHistory addPatientHistory(int respiratoryRate, int heartRate, int systolicBloodPressure){
+        PatientHistory ph = new PatientHistory(respiratoryRate, heartRate, systolicBloodPressure);
+        listOfPatientHistory.add(ph);
+        return ph;
+    }
+    
     public ArrayList<PatientHistory> getListOfPatientHistory() {
         return listOfPatientHistory;
     }
 
+    public void setListOfPatientHistory(ArrayList<PatientHistory> listOfPatientHistory) {
+        this.listOfPatientHistory = listOfPatientHistory;
+    }
+    
     public String getPatientVaccineRecordID() {
         return patientVaccineRecordID;
     }
@@ -101,9 +129,6 @@ public class PatientProfile {
         return patientUUID;
     }
     
-    
-    
-    
      /*
     * Override the toString method to get a meaningful response upon printing the string.
     */
@@ -112,8 +137,6 @@ public class PatientProfile {
         return  "Name:" + name + 
                 "\n\tUUID:" + patientUUID +
                 "\n\tAddress:" + address + 
-                "\n\tVaccine Status:" + isVaccinated +
-                "\n\tEligible for vaccine:" + isPatientEligibleForVaccine();
-
-}
+                "\n\tVaccine Status:" + isVaccinated;
+    }
 }

@@ -17,7 +17,7 @@ import java.util.*;
 import Verify.*;
 /**
  *
-* @author Sravya Sree Ogirala
+ * @author Sravya Sree Ogirala
  */
 public class NurseProfile {
     String name;
@@ -61,13 +61,18 @@ public class NurseProfile {
      * @return void
      */
    
-    public void updateVaccineStatus(PatientProfile pDetails, Vaccine vDetails){
+    public void updateVaccineStatus(PatientProfile pDetails, VaccineCenter vc){
         pDetails.isVaccinated = true;
         //generating vaccine ID for the vaccine which was given to patient
         String vaccineRecordId = UUID.randomUUID().toString();
         pDetails.setPatientVaccineRecordID(vaccineRecordId);
+        
+        // add to the certificate hash map
         VaccineCertificate.vaccinePatientMap.put(pDetails, vaccineRecordId);
         Verification.patientVaccineIDMap.put(pDetails, vaccineRecordId);
+        
+        //reduce the vaccine availability in the vaccine center
+        vc.setVaccineAvailability(vc.getVaccineAvailability() - 1);
     }
     
     /*
@@ -75,9 +80,10 @@ public class NurseProfile {
     */
     @Override
     public String toString(){
-        return  "Name: " + name + "\n" + "EmpID: " + employeeID ;
-               
-                
+        return  "Name: " + name + 
+                "\nEmpID: " + employeeID +
+                "\n";
+                        
     }
    
 }

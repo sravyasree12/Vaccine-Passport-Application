@@ -5,16 +5,19 @@
  */
 package VaccinePassportApplication;
 
+import Certification.VaccineCertificate;
 import Management.Management;
 import MedicalPersonnel.NurseDirectory;
 import MedicalPersonnel.NurseProfile;
 import PatientManagement.PatientDirectory;
+import PatientManagement.PatientHistory;
 import PatientManagement.PatientProfile;
 
 import VaccineManagement.Address;
 import VaccineManagement.Vaccine;
 import VaccineManagement.VaccineCenter;
 import VaccineManagement.VaccineInventory;
+import Verify.Verification;
 import com.github.javafaker.Faker;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  *
@@ -33,95 +37,86 @@ public class VaccinePassportApplication {
      Faker f = new Faker(); 
      Random random = new Random();
      
-     
      Management management = new Management();
-    HashMap<ZonedDateTime, PatientProfile> slotBookingMap = new HashMap<ZonedDateTime, PatientProfile>();
+     
+     //creating vaccines
+     for(int b=0; b<=1000; b++){
+         Vaccine vaccine = management.getVaccineInventory().manufactureVaccine("AstraZeneca");
+     }
 
-    //profiles
-    for (int i=0; i<=30; i++){
-         //vaccine centers with address
-       management.getVaccineInventory().addVaccineCenter(f.medical().hospitalName(), f.address().fullAddress()); 
+    System.out.println("\n\tVaccine Centers:\t");
+    for (int i=0; i<=10; i++){
+    //vaccine centers with address
+       VaccineCenter vc = management.getVaccineInventory().addVaccineCenter(f.medical().hospitalName(), f.address().fullAddress()); 
+       management.getVaccineInventory().assignVaccineToVaccineCenter(vc, 100);
+       System.out.println(vc);
     }  
      
     //list of vaccine centers
     List<VaccineCenter> vcList = management.getVaccineInventory().listOfVaccineCenters;
-
-    for (int i =0; i<=30; i++){
-         // patient name and address
+    
+    
+    // creating 15 patients
+    for(int i=0; i<15; i++){
         String address = f.address().fullAddress();
-         String name = f.name().fullName();
-        management.getPatientDirectory().newPatientProfile(name, address); 
+        String name = f.name().fullName();
+        PatientProfile pp = management.getPatientDirectory().newPatientProfile(name, address);
+        pp.addPatientHistory(random.nextInt(), random.nextInt(), random.nextInt());
+        pp.addPatientHistory(random.nextInt(), random.nextInt(), random.nextInt());
+        System.out.println("\nPatient Details:");
+        System.out.println(pp);
+    }
+    
+    
+    NurseDirectory nd = management.getNurseDirectory();
+    for (int b =0; b<=100; b++){
+        System.out.println("\nNurse Details:");
         VaccineCenter vc = vcList.get(random.nextInt(vcList.size()));
-        NurseDirectory nd = management.getNurseDirectory();
-        nd.addNurse(name, vc); //nurse name 
-     }  
-     
-     //ArrayLists
-     for (int i =0; i<=50; i++){
-       ArrayList<Vaccine> listOfVaccines = management.getVaccineInventory().getListOfVaccines(); //list of vaccines
-       ArrayList<VaccineCenter> listOfVaccineCenters = management.getVaccineInventory().getListOfVaccineCenters(); //list of vaccine centers
-       ArrayList<PatientProfile> listOfPatientProfiles = management.getPatientDirectory().getListOfPatientProfiles(); // list of patients
-       ArrayList<NurseProfile> listOfNurseProfiles = management.getNurseDirectory().getListOfNurseProfiles(); //list of nurses
+        //nurse details
+        String name1 = f.name().fullName();
+        System.out.println(nd.addNurse(name1, vc)); 
+        //nd.addNurse(name1, vc);
+    }
+    
+    ZonedDateTime date = ZonedDateTime.now();
+    VaccineCenter vc = vcList.get(random.nextInt(vcList.size()));
+    //schedule appointment
+
+    for(PatientProfile pp1 : management.getPatientDirectory().getListOfPatientProfiles()){
+        
+        pp1.scheduleVaccineAppointment(date, vc);
+        NurseProfile nurse = vc.getListOfAssignedNurses().get(random.nextInt(10));
+        nurse.updateVaccineStatus(pp1, vc);
+        //prints vaccine certificate
+        VaccineCertificate.printPatientCertificate(pp1);
+    }
+        
+        //verifying the certificate
+        for(PatientProfile pp1 : management.getPatientDirectory().getListOfPatientProfiles()){
+            if(pp1.isVaccinated == true){
+                Verification.verifiyVaccineCertificate(pp1);
+            }
+        }
+        
+        PatientProfile fakePerson = new PatientProfile("Fake Sravya", "Fake University");
+        fakePerson.setPatientVaccineRecordID("This is a fake value to cheat the system");
        
-     }
-//      //finish later
-//     for(Vaccine vaccine: management.getVaccineInventory().getListOfVaccines()){
-//         VaccineInventory vi = new VaccineInventory();
-//         vi.manufactureVaccine("AstraZeneca"); //change vaccine name later
-//          for(int i=0; i<20 ;i++){
-//             
-//             }
-//         }
+        System.out.println(fakePerson.getPatientVaccineRecordID());
+        
+        Verification.verifiyVaccineCertificate(fakePerson);
+        
+        
+  }
+}
      
-         //vaccine inventory 
-            System.out.println("\t\tVaccine Inventory:\t");
-            int x;
-           for(x = 0; x < 2; x++){
-               VaccineInventory vaccineInventory = management.getVaccineInventory();
-              // Vaccine vaccine = vaccineInventory.manufactureVaccine().get(x);
-               System.out.println(vaccineInventory);
-               x++;
-           }
+           
+           
+           
+           
      
-          // vaccine centers details
-          System.out.println("Vaccine Centers:\n");
-            int j;
-           for(j = 0; j < 30; j++){
-               VaccineInventory vaccineInventory = management.getVaccineInventory();
-               VaccineCenter center = vaccineInventory.getListOfVaccineCenters().get(j);
-               System.out.println(center);
-               j ++; 
-           }
-           
-           //nurses details
-            System.out.println("Nurse profiles:\n");
-            int i;
-           for(i = 0; i < 10; i++){
-               NurseDirectory nd = management.getNurseDirectory();
-               NurseProfile np = nd.getListOfNurseProfiles().get(i);
-               System.out.println(np);
-               i ++;
-           }
-           
-           //patient details with name, address and uuid along with initial vaccine status
-           System.out.println("\tPatient Details:\t");
-            int y;
-           for(y = 0; y < 100; y++){
-              PatientDirectory pdirec = management.getPatientDirectory();
-               PatientProfile pdetails = pdirec.getListOfPatientProfiles().get(y);
-               System.out.println(pdetails);
-               y++;
-           }
-           
-           
-           //after vaccination, display patient vaccine certificate
-           
-           
-           
-     }
       
        
      
      
     
-}
+

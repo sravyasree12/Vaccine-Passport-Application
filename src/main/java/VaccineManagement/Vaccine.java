@@ -17,21 +17,21 @@ import java.util.*;
  * @author Sravya Sree Ogirala
  */
 public class Vaccine {
-    VaccineInventory vaccineInventory;
+  
     String vaccineUUID;
     String vaccineName;
     ZonedDateTime mfgDate;
     //ZonedDateTime expDate; // keep exp date later
     
 
-    //to avoid anyone from creating vaccine objects anywhere else.
+    //constructor has been made protected to avoid anyone from creating vaccine objects anywhere else.
     // vaccine objects can be created only through Vaccine Inventory
     protected Vaccine(String vaccineName) {
-       // Faker f = new Faker();
-        this.vaccineInventory = vaccineInventory;
+       
         this.vaccineUUID = UUID.randomUUID().toString();
-        this.vaccineName = "GlaxoSmithKline"; //vaccine name to be decided later f.medical().medicineName();  
-        this.mfgDate = ZonedDateTime.now();    //displays current date as mfg date
+        this.vaccineName = vaccineName; 
+        //displays current date as mfg date
+        this.mfgDate = ZonedDateTime.now();    
         //this.expDate = ZonedDateTime.now() + ti   //displayes (mfg date + 90 days)
     }
     
@@ -40,7 +40,9 @@ public class Vaccine {
     */
          @Override
     public String toString(){
-        return  " " + vaccineName + "--" + vaccineUUID;
+        return  "Vaccine Name:" + vaccineName + 
+                "Vaccine UUID:" + vaccineUUID +
+                "Mfg Date:" + mfgDate;
                
                
     }

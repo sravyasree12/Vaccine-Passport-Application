@@ -30,8 +30,8 @@ import java.util.UUID;
       public ArrayList<Vaccine> listOfVaccines; //vaccine catalog
      
      public VaccineInventory(){
-       listOfVaccineCenters = new ArrayList<VaccineCenter>();
-       listOfVaccines = new ArrayList<Vaccine>();
+       this.listOfVaccineCenters = new ArrayList<VaccineCenter>();
+       this.listOfVaccines = new ArrayList<Vaccine>();
       }
   
     //method to create vaccines and add to the inventory
@@ -46,9 +46,28 @@ import java.util.UUID;
      public VaccineCenter addVaccineCenter(String vaccineCenterName, String vaccineCenterAddress){   
         VaccineCenter center = new VaccineCenter(vaccineCenterName, vaccineCenterAddress);
          listOfVaccineCenters.add(center);
+         
+         // upon registering a center, some vaccines are assigned to it.
+         assignVaccineToVaccineCenter(center);
         return center; 
       }
-    
+     
+     
+     public void assignVaccineToVaccineCenter(VaccineCenter vc){
+         // equally divide vaccines to each center
+         long count = totalNumberOfVaccines/listOfVaccineCenters.size();
+         vc.setVaccineAvailability(count);
+     }
+
+     // overload the above method to directly take the count instead of calculating
+     public void assignVaccineToVaccineCenter(VaccineCenter vc, long count){
+         if (count < totalNumberOfVaccines){
+             vc.setVaccineAvailability(count);
+         } else {
+             System.out.println("Too many vaccines requested. Did not assign vaccines. total number of vaccines are: " + totalNumberOfVaccines);
+         }
+     }
+
      public ArrayList<VaccineCenter> getListOfVaccineCenters() {
         return listOfVaccineCenters;
     }
