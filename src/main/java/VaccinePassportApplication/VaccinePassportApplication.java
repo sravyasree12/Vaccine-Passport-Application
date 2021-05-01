@@ -34,79 +34,73 @@ import java.util.UUID;
 public class VaccinePassportApplication {
 
     public static void main(String[] args) { 
-     Faker f = new Faker(); 
-     Random random = new Random();
+        Faker f = new Faker(); 
+        Random random = new Random();
+        Management management = new Management();
      
-     Management management = new Management();
-     
-     //creating vaccines
-     for(int b=0; b<=1000; b++){
-         Vaccine vaccine = management.getVaccineInventory().manufactureVaccine("AstraZeneca");
-     }
-
-    System.out.println("\n\tVaccine Centers:\t");
-    for (int i=0; i<=10; i++){
-    //vaccine centers with address
-       VaccineCenter vc = management.getVaccineInventory().addVaccineCenter(f.medical().hospitalName(), f.address().fullAddress()); 
-       management.getVaccineInventory().assignVaccineToVaccineCenter(vc, 100);
-       System.out.println(vc);
-    }  
-     
-    //list of vaccine centers
-    List<VaccineCenter> vcList = management.getVaccineInventory().listOfVaccineCenters;
-    
-    
-    // creating 15 patients
-    for(int i=0; i<15; i++){
-        String address = f.address().fullAddress();
-        String name = f.name().fullName();
-        PatientProfile pp = management.getPatientDirectory().newPatientProfile(name, address);
-        pp.addPatientHistory(random.nextInt(), random.nextInt(), random.nextInt());
-        pp.addPatientHistory(random.nextInt(), random.nextInt(), random.nextInt());
-        System.out.println("\nPatient Details:");
-        System.out.println(pp);
-    }
-    
-    
-    NurseDirectory nd = management.getNurseDirectory();
-    for (int b =0; b<=100; b++){
-        System.out.println("\nNurse Details:");
-        VaccineCenter vc = vcList.get(random.nextInt(vcList.size()));
-        //nurse details
-        String name1 = f.name().fullName();
-        System.out.println(nd.addNurse(name1, vc)); 
-        //nd.addNurse(name1, vc);
-    }
-    
-    ZonedDateTime date = ZonedDateTime.now();
-    VaccineCenter vc = vcList.get(random.nextInt(vcList.size()));
-    //schedule appointment
-
-    for(PatientProfile pp1 : management.getPatientDirectory().getListOfPatientProfiles()){
-        
-        pp1.scheduleVaccineAppointment(date, vc);
-        NurseProfile nurse = vc.getListOfAssignedNurses().get(random.nextInt(10));
-        nurse.updateVaccineStatus(pp1, vc);
-        //prints vaccine certificate
-        VaccineCertificate.printPatientCertificate(pp1);
-    }
-        
-        //verifying the certificate
-        for(PatientProfile pp1 : management.getPatientDirectory().getListOfPatientProfiles()){
-            if(pp1.isVaccinated == true){
-                Verification.verifiyVaccineCertificate(pp1);
-            }
+        //Part 1 - Inventory management
+        //manufacturing vaccines
+        for(int b=0; b<=1000; b++){
+            Vaccine vaccine = management.getVaccineInventory().manufactureVaccine("AstraZeneca");
         }
         
-        PatientProfile fakePerson = new PatientProfile("Fake Sravya", "Fake University");
+        //creating vaccine centers with address
+        System.out.println("\n\tVaccine Centers:\t");
+        for (int i=0; i<=10; i++){
+            VaccineCenter vc = management.getVaccineInventory().addVaccineCenter(f.medical().hospitalName(), f.address().fullAddress()); 
+            management.getVaccineInventory().assignVaccineToVaccineCenter(vc, 100);
+            System.out.println(vc);
+        }  
+        //list of vaccine centers
+        List<VaccineCenter> vcList = management.getVaccineInventory().listOfVaccineCenters;
+        
+        //Part 2 - Personnel Management
+        // creating 15 patients profiles
+        for(int i=0; i<15; i++){
+            String address = f.address().fullAddress();
+            String name = f.name().fullName();
+            PatientProfile pp = management.getPatientDirectory().newPatientProfile(name, address);
+            pp.addPatientHistory(random.nextInt(), random.nextInt(), random.nextInt());
+            pp.addPatientHistory(random.nextInt(), random.nextInt(), random.nextInt());
+            System.out.println("\nPatient Details:");
+            System.out.println(pp);
+        }
+    
+        //creating 100 nurses
+        NurseDirectory nd = management.getNurseDirectory();
+        for (int b =0; b<=100; b++){
+            System.out.println("\nNurse Details:");
+            VaccineCenter vc = vcList.get(random.nextInt(vcList.size()));
+            //nurse details
+            String name1 = f.name().fullName();
+            System.out.println(nd.addNurse(name1, vc)); 
+        }
+    
+        //Part 3 - Appointment Workflow and Certification 
+        ZonedDateTime date = ZonedDateTime.now();
+        VaccineCenter vc = vcList.get(random.nextInt(vcList.size()));
+        //Patient schedules vaccine appointment 
+        for(PatientProfile pp1 : management.getPatientDirectory().getListOfPatientProfiles()){
+            pp1.scheduleVaccineAppointment(date, vc);
+            NurseProfile nurse = vc.getListOfAssignedNurses().get(random.nextInt(10));
+            nurse.updateVaccineStatus(pp1, vc);
+            //prints vaccine certificate
+            VaccineCertificate.printPatientCertificate(pp1);
+        }
+        
+        //Part 4 - Verification
+        //verifying the Vaccine Certificate
+        for(PatientProfile pp1 : management.getPatientDirectory().getListOfPatientProfiles()){
+            if(pp1.isVaccinated == true){
+                Verification.verifyVaccineCertificate(pp1);
+            }
+        }
+        //To cheat the system, a fake patient is created with fake details
+        PatientProfile fakePerson = new PatientProfile("Fake Sravya", "Fake Address");
         fakePerson.setPatientVaccineRecordID("This is a fake value to cheat the system");
-       
         System.out.println(fakePerson.getPatientVaccineRecordID());
-        
-        Verification.verifiyVaccineCertificate(fakePerson);
-        
-        
-  }
+        Verification.verifyVaccineCertificate(fakePerson);   
+    }
 }
      
            

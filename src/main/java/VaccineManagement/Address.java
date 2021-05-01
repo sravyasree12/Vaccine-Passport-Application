@@ -12,16 +12,9 @@ import com.github.javafaker.Faker;
  * @author Sravya Sree Ogirala
  */
 public class Address {
-    
     String address;
  
-
-    /*
-    Constructor for Address object
-     * @param address 
-    */
     public Address() { 
-      
         this.address = address;
     }
     

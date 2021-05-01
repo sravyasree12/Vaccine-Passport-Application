@@ -5,7 +5,6 @@
  */
 package VaccineManagement;
 
-import VaccineManagement.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,24 +12,26 @@ import java.util.List;
 
 /**
  *
- * @author sravy
+ * @author Sravya Sree Ogirala
  */
 
-//to schedule appointments
-
 public class Appointment {
-   public HashMap<VaccineCenter, ArrayList<ZonedDateTime>> allSlotsMap;
+    public HashMap<VaccineCenter, ArrayList<ZonedDateTime>> allSlotsMap;
    
-   public Appointment(){
-       this.allSlotsMap = new HashMap<VaccineCenter, ArrayList<ZonedDateTime>>();
-   }
-   
-   public HashMap<VaccineCenter, ArrayList<ZonedDateTime>> displayAllSlotsMap(List<VaccineCenter> listOfVaccineCenters){
-       for(VaccineCenter vc: listOfVaccineCenters){
-           allSlotsMap.put(vc, vc.getListOfSlots());
-       }
-           
-      return allSlotsMap;
-   }
+    public Appointment(){
+        this.allSlotsMap = new HashMap<VaccineCenter, ArrayList<ZonedDateTime>>();
+    }
     
+    /**
+     * "displayAllSlotsMap" method displays all the vaccine slots in vaccine center
+     * @param listOfVaccineCenters from List<VaccineCenter>
+     * @return HashMap<VaccineCenter, ArrayList<ZonedDateTime>>
+     */
+   
+    public HashMap<VaccineCenter, ArrayList<ZonedDateTime>> displayAllSlotsMap(List<VaccineCenter> listOfVaccineCenters){
+        for(VaccineCenter vc: listOfVaccineCenters){
+            allSlotsMap.put(vc, vc.getListOfSlots());
+        }   
+        return allSlotsMap;
+    }  
 }

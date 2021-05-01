@@ -25,14 +25,13 @@ public class PatientDirectory {
      * @param address from Address
      * @return PatientProfile with patient details
      */
-    
     public PatientProfile newPatientProfile(String name, String address){
         PatientProfile pp = new PatientProfile(name, address);
         listOfPatientProfiles.add(pp);
         return pp;
     }
     
-    public ArrayList<PatientProfile> getListOfPatientProfiles() {
+    public ArrayList<PatientProfile> getListOfPatientProfiles(){
         return listOfPatientProfiles;
     }
 

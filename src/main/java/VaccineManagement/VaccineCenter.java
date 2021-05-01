@@ -32,46 +32,48 @@ public class VaccineCenter {
     public HashMap<ZonedDateTime, PatientProfile> slotBookingMap;
     ArrayList<NurseProfile> listOfAssignedNurses;
     
-    
-    //the constructor has been made protected to avoid object creation elsewhere 
-    //Vaccine Center objects can be created only via Vaccine Inventory using addVaccineCenter()
+    /**
+     * Protected constructor is used to prevent fraud vaccine centers elsewhere. 
+     * Thus, vaccine center objects can be created only through Vaccine Inventory.
+     * @param vaccineCenterName
+     * @param vaccineCenterAddress 
+     */
     protected VaccineCenter(String vaccineCenterName, String vaccineCenterAddress){
         
         this.vaccineCenterName = vaccineCenterName;
-       this.vaccineCenterAddress = vaccineCenterAddress;
+        this.vaccineCenterAddress = vaccineCenterAddress;
         this.centerUUID = UUID.randomUUID().toString();
         this.slotBookingMap = new HashMap<ZonedDateTime, PatientProfile>();
         this.listOfAssignedNurses = new ArrayList<NurseProfile>();
         this.listOfSlots = new ArrayList<ZonedDateTime>();
-
     }
-//    
-//     //this method allows patient to schedule vaccine appointment based on total number of vaccines in a vaccine center
-//     //all vaccines in a vaccine center will be available in slots to schedule for patients
-//      //total vaccine slots
-//    public void scheduleVaccineAppointment(ZonedDateTime d, PatientProfile pDetails){  //test method later
-//      Verification vp = new Verification(pDetails);
-//        if((pDetails.isPatientEligibleForVaccine()== false) || (vp.isPatientIDValid() == false)) {
-//            System.out.println("Sorry! You are not eligible for vaccination.");
-//          }
-//      if(numberOfAvailableSlots() == 0 || slotBookingMap.containsKey(d)){
-//        return;
-//        }
-//      slotBookingMap.put(d, pDetails);
-//     }
     
-    //this method tells about the number of vaccination slots available in a vaccine center
-      // available slots = total slots - booked slots
+    /**
+     * "numberOfAvailableSlots" method tells about the 
+     * number of vaccination slots available in a vaccine center.
+     * available slots = total slots - booked slots
+     * @return long
+     */
     public long numberOfAvailableSlots(){  
         return (this.vaccineAvailability - slotBookingMap.size());     
     }
     
+    /**
+     * "updateSlotBookingMap" method updates the slotBookingMap HashMap
+     * @param date from ZonedDateTime
+     * @param pp from PatientProfile
+     * @return HashMap<ZonedDateTime, PatientProfile> 
+     */
     public HashMap<ZonedDateTime, PatientProfile> updateSlotBookingMap(ZonedDateTime date, PatientProfile pp){
         slotBookingMap.put(date, pp);   
         return slotBookingMap; 
     }
-
-    //adds different date, time to the list of slots.
+    
+    /**
+     * "addTimeSlot" method adds different date, time to the list of slots.
+     * @param date from ZonedDateTime
+     * @return void
+     */
     public void addTimeSlot(ZonedDateTime date){
         listOfSlots.add(date);
     }
@@ -92,19 +94,14 @@ public class VaccineCenter {
         this.vaccineAvailability = vaccineAvailability;
     }
     
-    
-    
-     @Override
+    /**
+     * Override the toString method to get a meaningful response upon printing the string.
+     */
+    @Override
     public String toString(){
         return  "\n" + vaccineCenterName + "\n"
                 + vaccineCenterAddress + "\n"
                 + centerUUID + "\n" 
-                + "Number of available vaccine slots:" + numberOfAvailableSlots();
-                
-                
-                
-               
-    }
-    
-    
+                + "Number of available vaccine slots:" + numberOfAvailableSlots();           
+    } 
 }

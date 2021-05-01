@@ -17,17 +17,17 @@ import java.util.*;
  * @author Sravya Sree Ogirala
  */
 public class Vaccine {
-  
     String vaccineUUID;
     String vaccineName;
     ZonedDateTime mfgDate;
     //ZonedDateTime expDate; // keep exp date later
     
-
-    //constructor has been made protected to avoid anyone from creating vaccine objects anywhere else.
-    // vaccine objects can be created only through Vaccine Inventory
-    protected Vaccine(String vaccineName) {
-       
+    /**
+     * Protected constructor is used to prevent illegal vaccine manufacture elsewhere.
+     * Thus, vaccine objects can be created only through Vaccine Inventory.
+     * @param vaccineName 
+     */
+    protected Vaccine(String vaccineName){
         this.vaccineUUID = UUID.randomUUID().toString();
         this.vaccineName = vaccineName; 
         //displays current date as mfg date
@@ -35,16 +35,14 @@ public class Vaccine {
         //this.expDate = ZonedDateTime.now() + ti   //displayes (mfg date + 90 days)
     }
     
-     /*
+    /**
     * Override the toString method to get a meaningful response upon printing the string.
     */
-         @Override
+    @Override
     public String toString(){
         return  "Vaccine Name:" + vaccineName + 
                 "Vaccine UUID:" + vaccineUUID +
-                "Mfg Date:" + mfgDate;
-               
-               
+                "Mfg Date:" + mfgDate;          
     }
 
 

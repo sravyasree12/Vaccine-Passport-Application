@@ -11,7 +11,7 @@ import VaccineManagement.VaccineInventory;
 
 /**
  *
- * @author sravy
+ * @author Sravya Sree Ogirala
  */
 public class Management {
     String managementName;

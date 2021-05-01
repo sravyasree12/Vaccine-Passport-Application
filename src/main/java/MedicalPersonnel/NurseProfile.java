@@ -6,14 +6,9 @@
 package MedicalPersonnel;
 
 import PatientManagement.PatientProfile;
-import VaccineManagement.Vaccine;
-import VaccineManagement.VaccineInventory;
 import Certification.VaccineCertificate;
 import VaccineManagement.VaccineCenter;
-import com.github.javafaker.Faker;
-import java.util.HashMap;
 import java.util.UUID;
-import java.util.*;
 import Verify.*;
 /**
  *
@@ -22,31 +17,25 @@ import Verify.*;
 public class NurseProfile {
     String name;
     String employeeID;
-    
-    //HashMap<NurseProfile, patientVaccineDetails> nurseVaccinationRecord; // create later when required
-
-    
+ 
     /**
-     * the constructor has been made protected to avoid object creation elsewhere 
-     * Only through Vaccine directory, nurse objects can be created.
-     * this has been done to protect the nurse object and avoid creation of fake nurse objects.
+     *Protected constructor is used to prevent illegal nurse impersonation elsewhere.
+     *Thus, nurse objects can be created only through Nurse Directory.
      */ 
-     protected NurseProfile(String name) {
-      this.name = name;
-      this.employeeID = UUID.randomUUID().toString();
-     
-     //System.out.println("Error: Not allowed to create Nurse objects here.");
+    protected NurseProfile(String name) {
+        this.name = name;
+        this.employeeID = UUID.randomUUID().toString();
     }
     
     /** 
-     * "addVaccineRecord" method adds the details of which patient got which vaccine to a HashMap "vaccinePatientMap"
-     * 
-     * @param pDetails of Patient are taken
-     * @param vDetails of Vaccine are taken
+     * "addVaccineRecord" method adds the details of which patient got which vaccine 
+     * to a HashMap "vaccinePatientMap"
+     * @param pDetails from PatientProfile
+     * @param name from String
      * @return void
      */
-     public void addVaccineRecord(PatientProfile pDetails, String name){
-       VaccineCertificate.vaccinePatientMap.put(pDetails, name);
+    public void addVaccineRecord(PatientProfile pDetails, String name){
+        VaccineCertificate.vaccinePatientMap.put(pDetails, name);
     }
      
     /**
@@ -67,11 +56,11 @@ public class NurseProfile {
         String vaccineRecordId = UUID.randomUUID().toString();
         pDetails.setPatientVaccineRecordID(vaccineRecordId);
         
-        // add to the certificate hash map
+        // adding to the certificate hash map
         VaccineCertificate.vaccinePatientMap.put(pDetails, vaccineRecordId);
         Verification.patientVaccineIDMap.put(pDetails, vaccineRecordId);
         
-        //reduce the vaccine availability in the vaccine center
+        //reducing the vaccine availability in the vaccine center
         vc.setVaccineAvailability(vc.getVaccineAvailability() - 1);
     }
     

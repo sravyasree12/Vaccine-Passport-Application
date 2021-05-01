@@ -14,10 +14,9 @@ import java.util.Random;
 
 /**
  *
- * @author sravy
+* @author Sravya Sree Ogirala
  */
 public class NurseDirectory {
- 
     ArrayList<NurseProfile> listOfNurseProfiles;
     
     public NurseDirectory(){
@@ -33,7 +32,6 @@ public class NurseDirectory {
      * @param name from String
      * @return NurseProfile
      */
-
     public NurseProfile addNurse(String name, VaccineCenter center){
         NurseProfile nurse = new NurseProfile(name);
         listOfNurseProfiles.add(nurse);
@@ -43,13 +41,12 @@ public class NurseDirectory {
         return nurse;
     }
     
-    public ArrayList<NurseProfile> getListOfNurseProfiles() { 
+    /**
+     * getListOfNurseProfiles() method gives ArrayList of Nurse profiles
+     * @return ArrayList<NurseProfile>
+     */
+    public ArrayList<NurseProfile> getListOfNurseProfiles(){ 
         return listOfNurseProfiles;
     }
-    
-//    @Override
-//    public String toString(){
-//        return  "\nList of Nurses:" + listOfNurseProfiles;       
-//    }
   
 }
